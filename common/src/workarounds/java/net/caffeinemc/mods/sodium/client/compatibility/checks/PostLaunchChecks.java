@@ -27,37 +27,8 @@ public class PostLaunchChecks {
     }
 
     // https://github.com/CaffeineMC/sodium/issues/1916
+    // nope
     private static boolean isUsingPojavLauncher() {
-        if (System.getenv("POJAV_RENDERER") != null) {
-            LOGGER.warn("Detected presence of environment variable POJAV_LAUNCHER, which seems to indicate we are running on Android");
-
-            return true;
-        }
-
-        var librarySearchPaths = System.getProperty("java.library.path", null);
-
-        if (librarySearchPaths != null) {
-            for (var path : librarySearchPaths.split(":")) {
-                if (isKnownAndroidPathFragment(path)) {
-                    LOGGER.warn("Found a library search path which seems to be hosted in an Android filesystem: {}", path);
-
-                    return true;
-                }
-            }
-        }
-
-        var workingDirectory = System.getProperty("user.home", null);
-
-        if (workingDirectory != null) {
-            if (isKnownAndroidPathFragment(workingDirectory)) {
-                LOGGER.warn("Working directory seems to be hosted in an Android filesystem: {}", workingDirectory);
-            }
-        }
-
         return false;
-    }
-
-    private static boolean isKnownAndroidPathFragment(String path) {
-        return path.matches("/data/user/[0-9]+/net\\.kdt\\.pojavlaunch");
     }
 }
